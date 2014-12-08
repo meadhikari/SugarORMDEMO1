@@ -8,9 +8,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.orm.SugarRecord;
 import com.orm.query.Condition;
 import com.orm.query.Select;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static com.orm.SugarRecord.deleteAll;
 import static com.orm.SugarRecord.save;
@@ -53,6 +61,8 @@ public class MyActivity extends ActionBarActivity {
 
         // Deleting rows conditional
         deleteAll(Book.class, String.format("edition == '%s'","2nd edition"));
+
+        asyncdemo();
     }
 
 
@@ -73,6 +83,52 @@ public class MyActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void asyncdemo()
+    {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://pos.nepalinn.com/eposapi/floortable", new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                // here you get the json array
+                Log.e("info",response.toString());
+                super.onSuccess(statusCode, headers, response);
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+
+                super.onSuccess(statusCode, headers, responseString);
+            }
+
+
+        });
     }
 
 
